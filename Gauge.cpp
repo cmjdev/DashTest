@@ -17,12 +17,16 @@ void Gauge::resize(int w, int h) {
 void Gauge::update() {
   switch(type) {
     case 0:  // analog gauge
+      // analog display code
       break;
     case 1:  // digital gauge
+      // digital display code
       break;
     case 2:  // bargraph
+      // bargraph display code
       break;
     case 3:  // indicator
+      // indicator display code
       break;
   }
 }
@@ -42,6 +46,7 @@ Digital::Digital(int w, int h, byte p) {
   height = h;
   parameter = p;
   type = 1;
+  s.toCharArray(label,8);
 }
 
 Bargraph::Bargraph(int w, int h, byte p) {
@@ -49,6 +54,7 @@ Bargraph::Bargraph(int w, int h, byte p) {
   height = h;
   parameter = p;
   type = 2;
+  s.toCharArray(label,8);
 }
 
 Indicator::Indicator(int w, int h, byte p) {
@@ -56,6 +62,7 @@ Indicator::Indicator(int w, int h, byte p) {
   height = h;
   parameter = p;
   type = 3;
+  s.toCharArray(label,8);
 }
 
 
