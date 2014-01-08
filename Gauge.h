@@ -1,3 +1,7 @@
+#include <EEPROM.h>
+#include <SPI.h>
+#include <GD2.h>
+
 #ifndef GaugeClass_H
 #define GaugeClass_H
 
@@ -9,10 +13,15 @@ class Gauge {
     ~Gauge();  // destructor
     
     void move(int, int);
+    void resize(int, int);
+    void update();
     
-  //private:
+  protected:
     int x;  // x start position
     int y;  // y start position
+    int width;  // width of indicator
+    int height;  // height of indicator
+    int radius;
     char label[8];
     byte parameter; // parameter number
     byte type;  // gauge type (0-Analog, 1-Digital, 2-Bargraph, 3-Indicator)
@@ -20,53 +29,37 @@ class Gauge {
 
 class Analog : public Gauge {
   public:
-    Analog(int, byte);  // constructor
+    Analog(int, byte, String);  // constructor
     ~Analog();   // destructor
     
     void resize(int);  // resize gauge
-    void update(); // update gauge display
     
-  private:
-    int radius;  // radius of analog gauge
+  protected:
 };
 
 class Digital : public Gauge {
   public:
-    Digital();  // constructor
+    Digital(int, int, byte);  // constructor
     ~Digital();  // destructor
     
-    void resize(int, int); // resize gauge
-    void update(); // update gauge display
-    
-  private:
-    int width;  // width of gauge
-    int height;  // height of gauge
+  protected:
 };
 
 class Bargraph : public Gauge {
   public:
-    Bargraph();  // constructor
+    Bargraph(int, int, byte);  // constructor
     ~Bargraph();  // destructor
+
     
-    void resize(int, int);  // resize gauge
-    void update();  // update gauge display
-    
-  private:
-    int width;  // width of gauge
-    int height;  // height of gauge
+  protected:
 };
 
 class Indicator : public Gauge {
   public:
-    Indicator();  // constructor
+    Indicator(int, int, byte);  // constructor
     ~Indicator();  // destructor
     
-    void resize(int, int); // resize gauge
-    void update(); // update gauge display
-    
-  private:
-    int width;  // width of indicator
-    int height;  // height of indicator
+  protected:
 };
 
 #endif

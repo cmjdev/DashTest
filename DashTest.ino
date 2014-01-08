@@ -1,9 +1,10 @@
-#include "GaugeClass.h"
+#include "Gauge.h"
 
-// Gauge * objArray [3];
+Gauge * objArray [8];
   
 void setup ()
   {
+objArray [0] = new Analog(20,20,"Test");
 
   }  // end of setup
 
