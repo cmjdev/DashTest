@@ -1,11 +1,7 @@
-#include <EEPROM.h>
-#include <SPI.h>
-#include <GD2.h>
-
-#ifndef GaugeClass_H
-#define GaugeClass_H
-
 #include "Arduino.h"
+
+#ifndef Gauge_H
+#define Gauge_H
 
 class Gauge {
   public:
@@ -14,9 +10,7 @@ class Gauge {
     
     void move(int, int);
     void resize(int, int);
-    void update();
-    
-  protected:
+
     int x;  // x start position
     int y;  // y start position
     int width;  // width of indicator
@@ -29,37 +23,28 @@ class Gauge {
 
 class Analog : public Gauge {
   public:
-    Analog(int, byte, String);  // constructor
+    Analog(int, int, int, byte);  // constructor
     ~Analog();   // destructor
     
     void resize(int);  // resize gauge
-    
-  protected:
 };
 
 class Digital : public Gauge {
   public:
-    Digital(int, int, byte);  // constructor
+    Digital(int, int, int, int, byte);  // constructor
     ~Digital();  // destructor
-    
-  protected:
 };
 
 class Bargraph : public Gauge {
   public:
-    Bargraph(int, int, byte);  // constructor
+    Bargraph(int, int, int, int, byte);  // constructor
     ~Bargraph();  // destructor
-
-    
-  protected:
 };
 
 class Indicator : public Gauge {
   public:
-    Indicator(int, int, byte);  // constructor
+    Indicator(int, int, int, int, byte);  // constructor
     ~Indicator();  // destructor
-    
-  protected:
 };
 
 #endif
