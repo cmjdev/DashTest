@@ -26,7 +26,7 @@ void Dash::addGauge(byte t) {
 void Dash::display() {
   
 
-    g[0]->write();
+    g[0].write();
     Serial.println("dash write done");
 
   
