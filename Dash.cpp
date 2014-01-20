@@ -1,7 +1,5 @@
 #include "Dash.h"
 
-#define options OPT_FLAT | OPT_CENTER
-
 Dash::Dash() {
   gaugeNumber = 0;
 }
@@ -27,21 +25,9 @@ void Dash::addGauge(byte t) {
 
 void Dash::display() {
   
-  for(byte i = 0; i < gaugeNumber; i++) {
-   switch (g[i].type) {
-     case 0:
-      Serial.println("display analog"); 
-      break;
-     case 1:
-       Serial.println("display digital");
-       break;
-     case 2:
-       Serial.println("display bargraph");
-       break;
-     case 3:
-       Serial.println("display indicator");
-       break;
-   }
-  }
+
+    g[0]->write();
+    Serial.println("dash write done");
+
   
 }

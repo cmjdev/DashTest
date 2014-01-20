@@ -1,55 +1,82 @@
 #include "Gauge.h"
 
+#define options OPT_FLAT | OPT_CENTER
+
+extern byte parameterValue[39];
+extern char* parameterName[];
+
+
 Gauge::Gauge(){}
 
-void Gauge::move(int newX, int newY) {
-  x = newX;  // update x coordinate
-  y = newY;  // update y coordinate
+void Gauge::move(int _x, int _y) {
+  x = _x;  // update x coordinate
+  y = _y;  // update y coordinate
 }
 
-void Gauge::resize(int w, int h) {
-  width = w;
-  height = h;
+void Gauge::resize(int _w, int _h) {
+  w = _w;
+  h = _h;
 }
 
-Analog::Analog(int newX, int newY, int r, byte p) {
-  x = newX;
-  y = newY;
-  radius = r;
-  parameter = p;
-  type = 0;
+void Gauge::write(){}  // overloaded by sub functions
+
+Analog::Analog(int _x, int _y, int _r, byte _p) {
+  x = _x;
+  y = _y;
+  r = _r;
+  p = _p;
+  t= 0;
 
 }
 
-void Analog::resize(int r) {
-  radius = r;
+void Analog::resize(int _r) {
+  r = _r;
 }
 
-Digital::Digital(int newX, int newY, int w, int h, byte p) {
-  x = newX;
-  y = newY;
-  width = w;
-  height = h;
-  parameter = p;
-  type = 1;
+void Analog::write() {
+  GD.cmd_gauge(x, y, w, options, 10, 5, parameterValue[p], 255);
+  GD.cmd_number(x, y+(w/2), 30, options, parameterValue[p]);
+  GD.cmd_text(x, y-(w/3), 24, options, label);
+  Serial.println("gauge write done");
 }
 
-Bargraph::Bargraph(int newX, int newY, int w, int h, byte p) {
-  x = newX;
-  y = newY;
-  width = w;
-  height = h;
-  parameter = p;
-  type = 2;
+Digital::Digital(int _x, int _y, int _w, int _h, byte _p) {
+  x = _x;
+  y = _y;
+  w = _w;
+  h = _h;
+  p = _p;
+  t = 1;
 }
 
-Indicator::Indicator(int newX, int newY, int w, int h, byte p) {
-  x = newX;
-  y = newY;
-  width = w;
-  height = h;
-  parameter = p;
-  type = 3;
+void Digital::write() {
+  // function to display gauge
+}
+
+Bargraph::Bargraph(int _x, int _y, int _w, int _h, byte _p) {
+  x = _x;
+  y = _y;
+  w = _w;
+  h = _h;
+  p = _p;
+  t = 2;
+}
+
+void Bargraph::write() {
+  // function to display gauge
+}
+
+Indicator::Indicator(int _x, int _y, int _w, int _h, byte _p) {
+  x = _x;
+  y = _y;
+  w = _w;
+  h = _h;
+  p = _p;
+  t = 3;
+}
+
+void Indicator::write() {
+  // function to display gauge
 }
 
 

@@ -1,3 +1,7 @@
+#include <EEPROM.h>
+#include <SPI.h>
+#include <GD2.h>
+
 #include "Arduino.h"
 
 #ifndef Gauge_H
@@ -10,15 +14,15 @@ class Gauge {
     
     void move(int, int);
     void resize(int, int);
+    void write();
 
     int x;  // x start position
     int y;  // y start position
-    int width;  // width of indicator
-    int height;  // height of indicator
-    int radius;
+    int w;  // width of gauge
+    int h;  // height of gauge
     char label[8];
-    byte parameter; // parameter number
-    byte type;  // gauge type (0-Analog, 1-Digital, 2-Bargraph, 3-Indicator)
+    byte p; // parameter number
+    byte t;  // gauge type (0-Analog, 1-Digital, 2-Bargraph, 3-Indicator)
 };
 
 class Analog : public Gauge {
@@ -27,24 +31,33 @@ class Analog : public Gauge {
     ~Analog();   // destructor
     
     void resize(int);  // resize gauge
+    void write();
+    
+    int r;
 };
 
 class Digital : public Gauge {
   public:
     Digital(int, int, int, int, byte);  // constructor
     ~Digital();  // destructor
+    
+    void write();
 };
 
 class Bargraph : public Gauge {
   public:
     Bargraph(int, int, int, int, byte);  // constructor
     ~Bargraph();  // destructor
+    
+    void write();
 };
 
 class Indicator : public Gauge {
   public:
     Indicator(int, int, int, int, byte);  // constructor
     ~Indicator();  // destructor
+    
+    void write();
 };
 
 #endif

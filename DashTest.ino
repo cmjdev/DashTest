@@ -1,3 +1,7 @@
+#include <EEPROM.h>
+#include <SPI.h>
+#include <GD2.h>
+
 #include "Dash.h"
 
 char* parameterName[]={"SECL",  "SQRT",  "ENGN",   "BARO",  "MAP",   "MAT",     "CLT",   "TPS",    "BAT",  "EGO",   
@@ -6,20 +10,25 @@ char* parameterName[]={"SECL",  "SQRT",  "ENGN",   "BARO",  "MAP",   "MAT",     
                        "EGO2%", "PORTA", "PORTB",  "PORTC", "PORTD", "STACK",   "TPSL",  "iTimeX", "BCDC"};
 byte parameterValue[38];
 
-Dash Dashboard = Dash();
+Dash Dashboard;
 
 void setup ()
   {
+    GD.begin();
     Serial.begin(9600);
     Dashboard.addGauge(0);
-    Dashboard.addGauge(1);
+ /* Dashboard.addGauge(1);
     Dashboard.addGauge(2);
     Dashboard.addGauge(3);
+    Dashboard.display();
+  */
 
   }  // end of setup
 
 void loop ()
   {
-    Serial.print(Dashboard.gaugeNumber);
+    GD.Clear();
+    Dashboard.display();
+    GD.swap();
     delay(1000);
   }  // end of loop
