@@ -22,8 +22,9 @@ void Dash::addGauge(byte t) {
 
 void Dash::display() {
   
-  for(int i = 0; i < 8; i++)
-    g[i].write();
-
+  for(int i = 0; i < 8; i++) {
+    if(g[i].active)
+      g[i].write();
+  }
   
 }
