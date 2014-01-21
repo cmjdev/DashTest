@@ -14,11 +14,10 @@ class Dash {
   public:
   Dash();
   ~Dash();
-    byte gaugeNumber;  
+  Gauge g[8];
+  byte gaugeNumber;  
 
   void addGauge(byte);
-
-  Gauge * g[8];
   
   void display();
 };

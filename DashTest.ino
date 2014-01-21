@@ -15,7 +15,10 @@ Dash Dashboard;
 void setup ()
   {
     GD.begin();
-    Serial.begin(9600);
+    GD.ClearColorRGB(0x000000);
+    GD.cmd_bgcolor(0x000000);
+    GD.cmd_fgcolor(0xFFFFFF);
+    
     Dashboard.addGauge(0);
  /* Dashboard.addGauge(1);
     Dashboard.addGauge(2);
