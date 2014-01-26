@@ -12,7 +12,8 @@ class Gauge {
     Gauge();  // constructor
     ~Gauge();  // destructor
     
-    void update(int, int, int, byte);
+    void update(int, int, int, byte); // analog update
+    void update(int, int, int, int, byte); // all others update
     void move(int, int);
     void resize(int, int);
     void write();

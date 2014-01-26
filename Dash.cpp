@@ -10,12 +10,14 @@ Dash::~Dash() {}
 void Dash::addGauge(byte t) {
   switch (t) {
     case 0:
-      g[gaugeNumber++].update(240,136,100,t);
+      g[gaugeNumber++].update(240,115,100,t);
       break;
     case 1:
+      g[gaugeNumber++].update(60,50,100,80,t);
+      break;
     case 2:
+      g[gaugeNumber++].update(80,225,260,40,t);
     case 3:
-      //g[gaugeNumber++] = new Indicator(280,136,40,20,0);
       break;
   }
 }

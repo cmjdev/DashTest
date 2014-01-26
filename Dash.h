@@ -1,7 +1,3 @@
-#include <EEPROM.h>
-#include <SPI.h>
-#include <GD2.h>
-
 #include "Arduino.h"
 #include "Gauge.h"
 
