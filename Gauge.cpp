@@ -10,7 +10,7 @@ Gauge::Gauge(){}
 Gauge::~Gauge(){}
 
 // activate and pass parameters to analog gauge object
-void Gauge::update(int _x, int _y, int _r, byte _t) {
+void Gauge::update(byte _g, int _x, int _y, int _r, byte _t) {
   x = _x;
   y = _y;
   r = _r;
@@ -21,7 +21,7 @@ void Gauge::update(int _x, int _y, int _r, byte _t) {
 }
 
 // activate and pass parameters to all other gauge objects
-void Gauge::update(int _x, int _y, int _w, int _h, byte _t) {
+void Gauge::update(byte _g, int _x, int _y, int _w, int _h, byte _t) {
   x = _x;
   y = _y;
   w = _w;
@@ -44,6 +44,7 @@ void Gauge::resize(int _w, int _h) {
 
 
 void Gauge::write(){
+  GD.Tag(g);
   switch(t) {
     case 0:
       GD.cmd_gauge(x, y, r, options, 10, 5, parameterValue[p], 255);

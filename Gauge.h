@@ -12,12 +12,13 @@ class Gauge {
     Gauge();  // constructor
     ~Gauge();  // destructor
     
-    void update(int, int, int, byte); // analog update
-    void update(int, int, int, int, byte); // all others update
+    void update(byte, int, int, int, byte); // analog update
+    void update(byte, int, int, int, int, byte); // all others update
     void move(int, int);
     void resize(int, int);
     void write();
 
+    byte g;  // gauge number for tagging
     int x;  // x start position
     int y;  // y start position
     int w;  // width of gauge
