@@ -126,13 +126,13 @@ void menuEdit() {
     
     buildMenu();
     
+    Dashboard.g[selectedGauge].write();
+    
     GD.Tag(BACK_BUTTON);
     GD.cmd_button(310, 235, 80, 30, 28, options,  "Back");
     
     GD.Tag(EXIT_BUTTON);
     GD.cmd_button(395, 235, 80, 30, 28, options,  "Exit");
-    
-    Dashboard.g[selectedGauge].write();
     
     if(GD.inputs.tag != 0xFF && GD.inputs.tag < 9 && !editGauge)
       selectedGauge = GD.inputs.tag;
@@ -155,6 +155,7 @@ void menuEdit() {
   
     switch(GD.inputs.tag) {
       case POSITION_EDIT:
+        moveEdit(selectedGauge);
         break;
       case SIZE_EDIT:
         break;
@@ -172,5 +173,40 @@ void menuEdit() {
         break;
     }
   } 
+}
+
+void moveEdit(byte g) {
+  
+  byte inMove = true;
+  
+  while(inMove) {
+    
+    buildMenu();
+    Dashboard.g[g].write();
+    
+    GD.Tag(BACK_BUTTON);
+    GD.cmd_button(395, 235, 80, 30, 28, options,  "Back");
+    
+    
+    GD.swap();
+  
+    switch(GD.inputs.tag) {
+      case BACK_BUTTON:
+        inMove = false; delay(200);
+        break;
+    }
+    
+    while(GD.inputs.x < (Dashboard.g[g].x + 20) && GD.inputs.x > (Dashboard.g[g].x - 20) 
+          && GD.inputs.y < (Dashboard.g[g].y + 20) && GD.inputs.y > (Dashboard.g[g].y - 20)
+          && GD.inputs.x != -32768) {
+            
+      Dashboard.g[g].move(GD.inputs.x, GD.inputs.y);
+      buildMenu();
+      Dashboard.g[g].write();
+      GD.swap();
+    }
+    
+  } 
+  
 }
   

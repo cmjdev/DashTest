@@ -7,3 +7,5 @@ void menuMain();
 void menuCreate();
 void menuEdit();
 
+void moveEdit(byte);
+
