@@ -17,8 +17,6 @@ void Gauge::update(byte _g, int _x, int _y, int _r, byte _t) {
   r = _r;
   t = _t;
   active = true;
-  
-  parameterName[p].toCharArray(label, 8);
 }
 
 // activate and pass parameters to all other gauge objects
@@ -46,6 +44,9 @@ void Gauge::resize(int _w, int _h) {
 
 
 void Gauge::write(){
+  
+  parameterName[p].toCharArray(label, 8);
+  
   GD.Tag(g+1);
   switch(t) {
     case 0:

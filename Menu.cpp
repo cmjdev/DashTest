@@ -102,12 +102,19 @@ void menuCreate() {
 
     switch(GD.inputs.tag) {
     case ANALOG_CREATE:
+      Dashboard.addGauge(0);
+      inCreate = false;
       break;
     case DIGITAL_CREATE:
+    Dashboard.addGauge(1);
+      inCreate = false;
       break;
     case BARGRAPH_CREATE:
+    Dashboard.addGauge(2);
+      inCreate = false;
       break;
     case INDICATOR_CREATE:
+    //Dashboard.addGauge(0);
       break;
     case BACK_BUTTON:
       inCreate = false;
@@ -250,11 +257,11 @@ void parameterEdit(byte g) {
       delay(200);
       break;
     case LEFT_BUTTON:
-      Dashboard.g[g].p = 10;
+      Dashboard.g[g].p--;
       delay(200);
       break;
     case RIGHT_BUTTON:
-      Dashboard.g[g].p += 1;
+      Dashboard.g[g].p++;
       delay(200);
       break;
     }
