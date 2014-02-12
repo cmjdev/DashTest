@@ -18,10 +18,13 @@
 #define POSITION_EDIT 111
 #define SIZE_EDIT 112
 #define PARAMETER_EDIT 113
+#define PARAM_SLIDER 114
 
 #define EXIT_BUTTON 150
 #define BACK_BUTTON 151
 #define SELECT_BUTTON 152
+#define LEFT_BUTTON 153
+#define RIGHT_BUTTON 154
 
 extern Dash Dashboard;
 
@@ -37,176 +40,229 @@ void buildMenu() {
 
 // function to display main menu
 void menuMain() {
-  
+
   inMenu = true;
 
   while(inMenu) {
-    
+
     buildMenu();
 
     GD.Tag(CREATE_BUTTON);
     GD.cmd_button(5,5,80,30,28, options, "Create");
-      
+
     GD.Tag(EDIT_BUTTON);
     GD.cmd_button(90,5,80,30,28, options, "Edit");
-      
+
     GD.Tag(EXIT_BUTTON);
     GD.cmd_button(395, 235, 80, 30, 28, options, "Exit");
-    
+
     GD.swap();
-    
+
     switch(GD.inputs.tag) {
-      case CREATE_BUTTON:
-        menuCreate();
-        break;
-      case EDIT_BUTTON:
-        menuEdit();
-        break;
-      case EXIT_BUTTON:
-        inMenu = false;
-        break;
+    case CREATE_BUTTON:
+      menuCreate();
+      break;
+    case EDIT_BUTTON:
+      menuEdit();
+      break;
+    case EXIT_BUTTON:
+      inMenu = false;
+      break;
     }
   }
 }
 
 void menuCreate() {
-  
+
   byte inCreate = true;
-  
+
   while(inMenu && inCreate) {
-    
+
     buildMenu();
-  
+
     GD.Tag(ANALOG_CREATE);
     GD.cmd_button(5, 5, 140, 30, 28, options,  "Analog");
-    
+
     GD.Tag(DIGITAL_CREATE);
     GD.cmd_button(5, 40, 140, 30, 28, options,  "Digital");
-    
+
     GD.Tag(BARGRAPH_CREATE);
     GD.cmd_button(5, 75, 140, 30, 28, options,  "Bargraph");
-    
+
     GD.Tag(INDICATOR_CREATE);
     GD.cmd_button(5, 110, 140, 30, 28, options,  "Indicator");
-    
+
     GD.Tag(BACK_BUTTON);
     GD.cmd_button(310, 235, 80, 30, 28, options,  "Back");
-    
+
     GD.Tag(EXIT_BUTTON);
     GD.cmd_button(395, 235, 80, 30, 28, options,  "Exit");
-    
+
     GD.swap();
-  
+
     switch(GD.inputs.tag) {
-      case ANALOG_CREATE:
-        break;
-      case DIGITAL_CREATE:
-        break;
-      case BARGRAPH_CREATE:
-        break;
-      case INDICATOR_CREATE:
-        break;
-      case BACK_BUTTON:
-        inCreate = false;
-        break;
-      case EXIT_BUTTON:
-        inMenu = false;
-        break;
+    case ANALOG_CREATE:
+      break;
+    case DIGITAL_CREATE:
+      break;
+    case BARGRAPH_CREATE:
+      break;
+    case INDICATOR_CREATE:
+      break;
+    case BACK_BUTTON:
+      inCreate = false;
+      break;
+    case EXIT_BUTTON:
+      inMenu = false;
+      break;
     }
   } 
 }
 
 void menuEdit() {
-  
-    byte inEdit = true;
-    byte editGauge = false;
-    byte selectedGauge = 0;
-  
+
+  byte inEdit = true;
+  byte editGauge = false;
+  byte selectedGauge = 1;
+
   while(inMenu && inEdit) {
-    
+
     buildMenu();
+
+    Dashboard.g[selectedGauge-1].write();
     
-    Dashboard.g[selectedGauge].write();
-    
+    if(GD.inputs.tag > 0 && GD.inputs.tag < 9 && !editGauge)
+      selectedGauge = GD.inputs.tag;
+
     GD.Tag(BACK_BUTTON);
     GD.cmd_button(310, 235, 80, 30, 28, options,  "Back");
-    
+
     GD.Tag(EXIT_BUTTON);
     GD.cmd_button(395, 235, 80, 30, 28, options,  "Exit");
-    
-    if(GD.inputs.tag != 0xFF && GD.inputs.tag < 9 && !editGauge)
-      selectedGauge = GD.inputs.tag;
-      
+
     if (editGauge) {
       GD.Tag(POSITION_EDIT);
       GD.cmd_button(5, 5, 140, 30, 28, options,  "Position");
-      
+
       GD.Tag(SIZE_EDIT);
       GD.cmd_button(5, 40, 140, 30, 28, options,  "Size");
-      
+
       GD.Tag(PARAMETER_EDIT);
       GD.cmd_button(5, 75, 140, 30, 28, options,  "Parameter");
-    } else {
+    } 
+    else {
       GD.Tag(SELECT_BUTTON);
       GD.cmd_button(205, 235, 100, 30, 28, options,  "Select");
     }
-        
+
     GD.swap();
-  
+
     switch(GD.inputs.tag) {
-      case POSITION_EDIT:
-        moveEdit(selectedGauge);
+    case POSITION_EDIT:
+      moveEdit(selectedGauge-1);
+      break;
+    case SIZE_EDIT:
+      break;
+    case PARAMETER_EDIT:
+      parameterEdit(selectedGauge-1);
+      break;
+    case BACK_BUTTON:
+      if(editGauge) {
+        editGauge = false; 
+        delay(200); 
         break;
-      case SIZE_EDIT:
-        break;
-      case PARAMETER_EDIT:
-        break;
-      case BACK_BUTTON:
-        if(editGauge) {editGauge = false; delay(200); break;}
-        inEdit = false;
-        break;
-      case SELECT_BUTTON:
-        editGauge = true;
-        break;
-      case EXIT_BUTTON:
-        inMenu = false;
-        break;
+      }
+      inEdit = false;
+      break;
+    case SELECT_BUTTON:
+      editGauge = true;
+      break;
+    case EXIT_BUTTON:
+      inMenu = false;
+      break;
     }
   } 
 }
 
 void moveEdit(byte g) {
-  
+
   byte inMove = true;
-  
+
   while(inMove) {
-    
+
     buildMenu();
     Dashboard.g[g].write();
-    
+
     GD.Tag(BACK_BUTTON);
     GD.cmd_button(395, 235, 80, 30, 28, options,  "Back");
-    
-    
+
+
     GD.swap();
-  
+
     switch(GD.inputs.tag) {
-      case BACK_BUTTON:
-        inMove = false; delay(200);
-        break;
+    case BACK_BUTTON:
+      inMove = false; 
+      delay(200);
+      break;
     }
-    
+
     while(GD.inputs.x < (Dashboard.g[g].x + 20) && GD.inputs.x > (Dashboard.g[g].x - 20) 
-          && GD.inputs.y < (Dashboard.g[g].y + 20) && GD.inputs.y > (Dashboard.g[g].y - 20)
-          && GD.inputs.x != -32768) {
-            
+      && GD.inputs.y < (Dashboard.g[g].y + 20) && GD.inputs.y > (Dashboard.g[g].y - 20)
+      && GD.inputs.x != -32768) {
+
       Dashboard.g[g].move(GD.inputs.x, GD.inputs.y);
       buildMenu();
       Dashboard.g[g].write();
       GD.swap();
     }
-    
+
   } 
-  
+
 }
-  
+
+void parameterEdit(byte g) {
+
+  byte inParameter = true;
+  int value = 0;
+
+  while (inParameter) {
+    buildMenu();
+    //Dashboard.g[g].write();
+
+
+    GD.Tag(BACK_BUTTON);
+    GD.cmd_button(395, 235, 80, 30, 28, options,  "Back");
+
+    // left arrow
+    GD.Tag(LEFT_BUTTON);
+    GD.cmd_button(150, 150, 80, 30, 28, options,  "<");
+    // parameter name
+    GD.cmd_text(200, 100, 31, options, Dashboard.g[g].label);
+    // right arrow
+    GD.Tag(RIGHT_BUTTON);
+    GD.cmd_button(250, 150, 80, 30, 28, options,  ">");
+
+    GD.swap();
+
+    switch(GD.inputs.tag) {
+    case BACK_BUTTON:
+      inParameter = false; 
+      delay(200);
+      break;
+    case LEFT_BUTTON:
+      Dashboard.g[g].p = 10;
+      delay(200);
+      break;
+    case RIGHT_BUTTON:
+      Dashboard.g[g].p += 1;
+      delay(200);
+      break;
+    }
+
+  }
+
+}
+
+
+
+

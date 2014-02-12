@@ -8,4 +8,4 @@ void menuCreate();
 void menuEdit();
 
 void moveEdit(byte);
-
+void parameterEdit(byte);
