@@ -12,25 +12,25 @@ String parameterName[]={"SECL",  "SQRT",  "ENGN",   "BARO",  "MAP",   "MAT",    
 byte parameterValue[38];
 byte currentDash = 0;
 
-Dash Dashboard[8];
+Dash Dashboard;//[8];
 
 void setup ()
   {
     GD.begin();
 
-/*    Dashboard.addGauge(0);
+    Dashboard.addGauge(0);
     Dashboard.addGauge(1);
     Dashboard.addGauge(2);
 //    Dashboard.addGauge(3);
 //    Dashboard.display();
-*/
+
 
   }  // end of setup
 
 void loop ()
   {
   int lastY = GD.inputs.y;
-  int lastX = GD.inputs.x;
+  //sint lastX = GD.inputs.x;
   
   GD.get_inputs();
 
@@ -41,7 +41,8 @@ void loop ()
     //currentDash = (currentDash == 7) ? 0 : currentDash++;
 
   GD.Clear();
-  Dashboard[currentDash].display();
+  Dashboard.display();
+  delay(20);
   GD.swap();
   delay(60);
   }  // end of loop

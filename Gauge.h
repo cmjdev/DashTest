@@ -17,6 +17,7 @@ class Gauge {
     void move(int, int);
     void resize(int, int);
     void write();
+    void save();
 
     byte g;  // gauge number for tagging
     int x;  // x start position

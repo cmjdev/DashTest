@@ -66,3 +66,27 @@ void Gauge::write(){
   }
 
 }
+
+void Gauge::save(){
+  
+byte adr = g*22;
+
+EEPROM.write(adr++, g);
+EEPROM.write(adr++, p);
+EEPROM.write(adr++, t);
+EEPROM.write(adr++, active);
+
+EEPROM.write(adr++, highByte(x));
+EEPROM.write(adr++, lowByte(x));
+EEPROM.write(adr++, highByte(y));
+EEPROM.write(adr++, lowByte(y));
+EEPROM.write(adr++, highByte(w));
+EEPROM.write(adr++, lowByte(w));
+EEPROM.write(adr++, highByte(h));
+EEPROM.write(adr++, lowByte(h));
+EEPROM.write(adr++, highByte(r));
+EEPROM.write(adr++, lowByte(r));
+
+for(int i = 0; i < 8; i++)
+  EEPROM.write(adr++, label[i]);
+}
