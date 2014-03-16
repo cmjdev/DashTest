@@ -3,6 +3,7 @@
 #include <GD2.h>
 
 #include "Dash.h"
+#include "Menu.h"
 
 String parameterName[]={"SECL",  "SQRT",  "ENGN",   "BARO",  "MAP",   "MAT",     "CLT",   "TPS",    "BAT",  "EGO",   
                        "EGO1%", "AIR%",  "ENRCH%", "RPM",   "PW1",   "AENRICH", "BARO%", "GAMA%",  "VE1%", "PW2",   
@@ -15,11 +16,7 @@ Dash Dashboard;
 void setup ()
   {
     GD.begin();
-    Serial.begin(9600);
-    GD.ClearColorRGB(0x000000);
-    GD.cmd_bgcolor(0x202020);
-    GD.cmd_fgcolor(0xFFFFFF);
-    
+
     Dashboard.addGauge(0);
     Dashboard.addGauge(1);
     Dashboard.addGauge(2);
@@ -31,8 +28,16 @@ void setup ()
 
 void loop ()
   {
-    GD.Clear();
-    Dashboard.display();
-    GD.swap();
-    delay(1000);
+  int lastY = GD.inputs.y;
+
+  
+  GD.get_inputs();
+
+  if (lastY > 0 && lastY < 20 && GD.inputs.y > 20)
+    menuMain();
+  //GD.ClearColorRGB(0x103000);
+  GD.Clear();
+  Dashboard.display();
+  GD.swap();
+  delay(60);
   }  // end of loop
