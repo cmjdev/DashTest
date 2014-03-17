@@ -71,9 +71,10 @@ void menuMain() {
       break;
     }
   }
-  
+  GD.__end();
   for(byte i = 0; i < 8; i++)
-    Dashboard.g[i].save();
+    Dashboard.g[i].save(i);
+  GD.resume();
 }
 
 void menuCreate() {
@@ -110,15 +111,15 @@ void menuCreate() {
       inCreate = false;
       break;
     case DIGITAL_CREATE:
-    Dashboard.addGauge(1);
+      Dashboard.addGauge(1);
       inCreate = false;
       break;
     case BARGRAPH_CREATE:
-    Dashboard.addGauge(2);
+      Dashboard.addGauge(2);
       inCreate = false;
       break;
     case INDICATOR_CREATE:
-    //Dashboard.addGauge(0);
+      //Dashboard.addGauge(0);
       break;
     case BACK_BUTTON:
       inCreate = false;
@@ -141,7 +142,7 @@ void menuEdit() {
     buildMenu();
 
     Dashboard.g[selectedGauge-1].write();
-    
+
     if(GD.inputs.tag > 0 && GD.inputs.tag < 9 && !editGauge)
       selectedGauge = GD.inputs.tag;
 
@@ -273,6 +274,7 @@ void parameterEdit(byte g) {
   }
 
 }
+
 
 
 
