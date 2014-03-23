@@ -71,12 +71,12 @@ void menuMain() {
       break;
     }
   }
-  /*GD.__end();
+  GD.__end();
    //GD.finish();
    for(byte i = 0; i < 8; i++)
    Dashboard.g[i].save(i);
    //GD.begin();
-   GD.resume();*/
+   GD.resume();
 }
 
 void menuCreate() {
