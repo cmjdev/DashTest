@@ -71,10 +71,12 @@ void menuMain() {
       break;
     }
   }
-  GD.__end();
-  for(byte i = 0; i < 8; i++)
-    Dashboard.g[i].save(i);
-  GD.resume();
+  /*GD.__end();
+   //GD.finish();
+   for(byte i = 0; i < 8; i++)
+   Dashboard.g[i].save(i);
+   //GD.begin();
+   GD.resume();*/
 }
 
 void menuCreate() {
@@ -274,6 +276,7 @@ void parameterEdit(byte g) {
   }
 
 }
+
 
 
 
