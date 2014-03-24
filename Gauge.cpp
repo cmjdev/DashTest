@@ -71,7 +71,7 @@ void Gauge::write(){
     break;
   case 1:
     GD.cmd_number(settings.x, settings.y+15, 30, options, parameterValue[settings.p]);
-    GD.cmd_text(settings.x, settings.y-15, 28, options, parameterName[settings.p]);  
+    GD.cmd_text(settings.x, settings.y-15, 28, options, getName());  
     break;
   case 2:
     GD.cmd_progress(settings.x, settings.y, settings.w, settings.h, options, parameterValue[settings.p], 255);
