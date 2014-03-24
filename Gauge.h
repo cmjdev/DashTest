@@ -19,7 +19,6 @@ public:
   word w;  // width of gauge
   word h;  // height of gauge
   word r;  // radius of analog gauge
-  char label[8];
   byte p; // parameter number
   byte t;  // gauge type (0-Analog, 1-Digital, 2-Bargraph, 3-Indicator)
   byte active;  // gauge in use
@@ -31,8 +30,8 @@ public:
   void move(int, int);
   void resize(int, int);
   void write();
-  void save();
-  void recover();
+  void save(byte);
+  void recover(byte);
 };
 
 

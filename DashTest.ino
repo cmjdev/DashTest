@@ -7,24 +7,19 @@
 #include "Dash.h"
 #include "Menu.h"
 
-String parameterName[]={
-  "SECL",  "SQRT",  "ENGN",   "BARO",  "MAP",   "MAT",     "CLT",   "TPS",    "BAT",  "EGO",   
-  "EGO1%", "AIR%",  "ENRCH%", "RPM",   "PW1",   "AENRICH", "BARO%", "GAMA%",  "VE1%", "PW2",   
-  "VE2%",  "IDLE%", "iTIME",  "iTime", "ADV",   "AFRTGT",  "FUEL",  "EGT",    "CLT<", "KNCK<", 
-  "EGO2%", "PORTA", "PORTB",  "PORTC", "PORTD", "STACK",   "TPSL",  "iTimeX", "BCDC"};
-
-byte parameterValue[38];
+byte parameterValue[39];
 byte currentDash = 0;
 
 File myFile;
 
-Dash Dashboard;//[8];
+Dash Dashboard;
 
 void setup ()
 {
   Serial.begin(9600);
   
-  Dashboard.g[0].recover();
+  for(byte i = 0; i < 8; i++)
+    Dashboard.g[i].recover(i);
 
 
 

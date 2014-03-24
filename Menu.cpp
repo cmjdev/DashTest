@@ -26,8 +26,10 @@
 #define LEFT_BUTTON 153
 #define RIGHT_BUTTON 154
 
-extern Dash Dashboard;//[8];
+extern Dash Dashboard;
 extern byte currentDash;
+extern char* parameterName;
+char buf[8];
 
 byte inMenu = false;
 
@@ -80,7 +82,8 @@ void menuMain() {
    GD.resume();
 */
 
-  Dashboard.g[0].save();
+  for(byte i = 0; i < 8; i++)
+  Dashboard.g[i].save(i);
 
 }
 
@@ -157,7 +160,7 @@ void menuEdit() {
     GD.cmd_button(310, 235, 80, 30, 28, options,  "Back");
 
     GD.Tag(EXIT_BUTTON);
-    GD.cmd_button(395, 235, 80, 30, 28, options,  "settings.xit");
+    GD.cmd_button(395, 235, 80, 30, 28, options,  "Exit");
 
     if (editGauge) {
       GD.Tag(POSITION_EDIT);
@@ -242,13 +245,14 @@ void moveEdit(byte g) {
 void parameterEdit(byte g) {
 
   byte inParameter = true;
-  int value = 0;
 
   while (inParameter) {
     buildMenu();
     //Dashboard.g[g].write();
+    
+   //strcpy_P(buf, (char*)pgm_read_word(&(parameterName[Dashboard.g[g].settings.p])));
 
-
+    
     GD.Tag(BACK_BUTTON);
     GD.cmd_button(395, 235, 80, 30, 28, options,  "Back");
 
@@ -256,7 +260,7 @@ void parameterEdit(byte g) {
     GD.Tag(LEFT_BUTTON);
     GD.cmd_button(150, 150, 80, 30, 28, options,  "<");
     // parameter name
-    GD.cmd_text(200, 100, 31, options, Dashboard.g[g].settings.label);
+    GD.cmd_text(200, 100, 31, options, buf);
     // right arrow
     GD.Tag(RIGHT_BUTTON);
     GD.cmd_button(250, 150, 80, 30, 28, options,  ">");
@@ -269,11 +273,17 @@ void parameterEdit(byte g) {
       delay(200);
       break;
     case LEFT_BUTTON:
-      Dashboard.g[g].settings.p--;
+      Dashboard.g[g].settings.p = (Dashboard.g[g].settings.p == 0) ? 0 : Dashboard.g[g].settings.p - 1;
+      Serial.println(Dashboard.g[g].settings.p);
+      Serial.println("changeme");
+
       delay(200);
       break;
     case RIGHT_BUTTON:
-      Dashboard.g[g].settings.p++;
+      Dashboard.g[g].settings.p = (Dashboard.g[g].settings.p > 38) ? 0 : Dashboard.g[g].settings.p + 1;
+      Serial.println(Dashboard.g[g].settings.p);
+      Serial.println("changeme");
+
       delay(200);
       break;
     }
