@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include "Dash.h"
 #include "Menu.h"
+#include "Attributes.h"
 
 #define options OPT_FLAT
 
@@ -22,14 +23,13 @@
 
 #define EXIT_BUTTON 150
 #define BACK_BUTTON 151
-#define SELECT_BUTTON 152
-#define LEFT_BUTTON 153
-#define RIGHT_BUTTON 154
+#define DELETE_BUTTON 153
+#define SELECT_BUTTON 154
+#define LEFT_BUTTON 155
+#define RIGHT_BUTTON 156
 
 extern Dash Dashboard;
 extern byte currentDash;
-extern char* parameterName;
-char buf[8];
 
 byte inMenu = false;
 
@@ -57,19 +57,22 @@ void menuMain() {
     GD.cmd_button(90,5,80,30,28, options, "Edit");
 
     GD.Tag(EXIT_BUTTON);
-    GD.cmd_button(395, 235, 80, 30, 28, options, "settings.xit");
+    GD.cmd_button(395, 235, 80, 30, 28, options, "Exit");
 
     GD.swap();
 
     switch(GD.inputs.tag) {
     case CREATE_BUTTON:
       menuCreate();
+      delay(200);
       break;
     case EDIT_BUTTON:
       menuEdit();
+      delay(200);
       break;
     case EXIT_BUTTON:
       inMenu = false;
+      delay(200);
       break;
     }
   }
@@ -119,14 +122,17 @@ void menuCreate() {
     case ANALOG_CREATE:
       Dashboard.addGauge(0);
       inCreate = false;
+      delay(200);
       break;
     case DIGITAL_CREATE:
       Dashboard.addGauge(1);
       inCreate = false;
+      delay(200);
       break;
     case BARGRAPH_CREATE:
       Dashboard.addGauge(2);
       inCreate = false;
+      delay(200);
       break;
     case INDICATOR_CREATE:
       //Dashboard.addGauge(0);
@@ -150,7 +156,7 @@ void menuEdit() {
   while(inMenu && inEdit) {
 
     buildMenu();
-
+    if (Dashboard.g[selectedGauge-1].settings.active)
     Dashboard.g[selectedGauge-1].write();
 
     if(GD.inputs.tag > 0 && GD.inputs.tag < 9 && !editGauge)
@@ -161,6 +167,9 @@ void menuEdit() {
 
     GD.Tag(EXIT_BUTTON);
     GD.cmd_button(395, 235, 80, 30, 28, options,  "Exit");
+    
+    GD.Tag(DELETE_BUTTON);
+    GD.cmd_button(10,235,80,30,28,options, "Clear");
 
     if (editGauge) {
       GD.Tag(POSITION_EDIT);
@@ -198,6 +207,9 @@ void menuEdit() {
       break;
     case SELECT_BUTTON:
       editGauge = true;
+      break;
+    case DELETE_BUTTON:
+      Dashboard.clear();
       break;
     case EXIT_BUTTON:
       inMenu = false;
@@ -250,7 +262,7 @@ void parameterEdit(byte g) {
     buildMenu();
     //Dashboard.g[g].write();
     
-   //strcpy_P(buf, (char*)pgm_read_word(&(parameterName[Dashboard.g[g].settings.p])));
+    //strcpy_P(buf, (char*)pgm_read_word(&(parameterName[Dashboard.g[g].settings.p])));
 
     
     GD.Tag(BACK_BUTTON);
@@ -260,7 +272,7 @@ void parameterEdit(byte g) {
     GD.Tag(LEFT_BUTTON);
     GD.cmd_button(150, 150, 80, 30, 28, options,  "<");
     // parameter name
-    GD.cmd_text(200, 100, 31, options, buf);
+    GD.cmd_text(200, 100, 31, options, Dashboard.g[g].getName());
     // right arrow
     GD.Tag(RIGHT_BUTTON);
     GD.cmd_button(250, 150, 80, 30, 28, options,  ">");
@@ -274,15 +286,11 @@ void parameterEdit(byte g) {
       break;
     case LEFT_BUTTON:
       Dashboard.g[g].settings.p = (Dashboard.g[g].settings.p == 0) ? 0 : Dashboard.g[g].settings.p - 1;
-      Serial.println(Dashboard.g[g].settings.p);
-      Serial.println("changeme");
 
       delay(200);
       break;
     case RIGHT_BUTTON:
       Dashboard.g[g].settings.p = (Dashboard.g[g].settings.p > 38) ? 0 : Dashboard.g[g].settings.p + 1;
-      Serial.println(Dashboard.g[g].settings.p);
-      Serial.println("changeme");
 
       delay(200);
       break;

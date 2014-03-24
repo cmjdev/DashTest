@@ -14,6 +14,7 @@ public:
   byte gaugeNumber;  
 
   void addGauge(byte);
+  void clear();
 
   void display();
 };

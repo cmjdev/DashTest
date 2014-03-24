@@ -23,6 +23,11 @@ void Dash::addGauge(byte t) {
   }
 }
 
+void Dash::clear() {
+  for(int i=0; i < 8; i++)
+    g[i].settings.active = false;
+  gaugeNumber = 0;
+}
 void Dash::display() {
 
   for(int i = 0; i < 8; i++) {

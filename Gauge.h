@@ -30,6 +30,7 @@ public:
   void move(int, int);
   void resize(int, int);
   void write();
+  char* getName();
   void save(byte);
   void recover(byte);
 };

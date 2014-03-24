@@ -60,14 +60,14 @@ void Gauge::resize(int _w, int _h) {
 void Gauge::write(){
 
   //parameterName[settings.p].toCharArray(settings.label, 10);
-  strcpy_P(label, (char*)pgm_read_word(&(parameterName[settings.p])));
+  //strcpy_P(label, (char*)pgm_read_word(&(parameterName[settings.p])));
 
   GD.Tag(settings.g+1);
   switch(settings.t) {
   case 0:
     GD.cmd_gauge(settings.x, settings.y, settings.r, options, 10, 5, parameterValue[settings.p], 255);
     GD.cmd_number(settings.x, settings.y+(settings.r/2), 30, options, parameterValue[settings.p]);
-    GD.cmd_text(settings.x, settings.y-(settings.r/3), 28, options, label);  
+    GD.cmd_text(settings.x, settings.y-(settings.r/3), 28, options, getName());  
     break;
   case 1:
     GD.cmd_number(settings.x, settings.y+15, 30, options, parameterValue[settings.p]);
@@ -81,6 +81,12 @@ void Gauge::write(){
   }
 
 }
+
+char* Gauge::getName() {
+   strcpy_P(label, (char*)pgm_read_word(&(parameterName[settings.p])));
+   return label;
+}
+  
 
 void Gauge::save(byte i){
 
