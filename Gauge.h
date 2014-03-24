@@ -11,15 +11,8 @@ class Gauge {
 public:
   Gauge();  // constructor
   ~Gauge();  // destructor
-
-  void update(byte, int, int, int, byte); // analog update
-  void update(byte, int, int, int, int, byte); // all others update
-  void move(int, int);
-  void resize(int, int);
-  void write();
-  void save(byte);
-  void recover(byte);
-
+  
+    struct settings_t {
   byte g;  // gauge number for tagging
   word x;  // x start position
   word y;  // y start position
@@ -30,6 +23,16 @@ public:
   byte p; // parameter number
   byte t;  // gauge type (0-Analog, 1-Digital, 2-Bargraph, 3-Indicator)
   byte active;  // gauge in use
+  } 
+  settings;
+
+  void update(byte, int, int, int, byte); // analog update
+  void update(byte, int, int, int, int, byte); // all others update
+  void move(int, int);
+  void resize(int, int);
+  void write();
+  void save();
+  void recover();
 };
 
 

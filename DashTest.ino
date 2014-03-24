@@ -23,11 +23,8 @@ Dash Dashboard;//[8];
 void setup ()
 {
   Serial.begin(9600);
-  pinMode(10, OUTPUT);
-  if (!SD.begin(9)) {
-    Serial.println("initialization failed!");
-  }
-  Serial.println("init passed");
+  
+  Dashboard.g[0].recover();
 
 
 
@@ -38,13 +35,7 @@ void setup ()
   //    Dashboard.addGauge(3);
   //    Dashboard.display();
 
-
-  GD.__end();
-  for(int i = 0; i < 8; i++)
-    Dashboard.g[i].recover(i);
-  GD.resume();
   GD.begin(~GD_STORAGE);
-
 }  // end of setup
 
 void loop ()

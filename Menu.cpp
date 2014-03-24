@@ -55,7 +55,7 @@ void menuMain() {
     GD.cmd_button(90,5,80,30,28, options, "Edit");
 
     GD.Tag(EXIT_BUTTON);
-    GD.cmd_button(395, 235, 80, 30, 28, options, "Exit");
+    GD.cmd_button(395, 235, 80, 30, 28, options, "settings.xit");
 
     GD.swap();
 
@@ -71,12 +71,17 @@ void menuMain() {
       break;
     }
   }
+  /*
   GD.__end();
    //GD.finish();
    for(byte i = 0; i < 8; i++)
    Dashboard.g[i].save(i);
    //GD.begin();
    GD.resume();
+*/
+
+  Dashboard.g[0].save();
+
 }
 
 void menuCreate() {
@@ -103,7 +108,7 @@ void menuCreate() {
     GD.cmd_button(310, 235, 80, 30, 28, options,  "Back");
 
     GD.Tag(EXIT_BUTTON);
-    GD.cmd_button(395, 235, 80, 30, 28, options,  "Exit");
+    GD.cmd_button(395, 235, 80, 30, 28, options,  "settings.xit");
 
     GD.swap();
 
@@ -152,7 +157,7 @@ void menuEdit() {
     GD.cmd_button(310, 235, 80, 30, 28, options,  "Back");
 
     GD.Tag(EXIT_BUTTON);
-    GD.cmd_button(395, 235, 80, 30, 28, options,  "Exit");
+    GD.cmd_button(395, 235, 80, 30, 28, options,  "settings.xit");
 
     if (editGauge) {
       GD.Tag(POSITION_EDIT);
@@ -220,8 +225,8 @@ void moveEdit(byte g) {
       break;
     }
 
-    while(GD.inputs.x < (Dashboard.g[g].x + 20) && GD.inputs.x > (Dashboard.g[g].x - 20) 
-      && GD.inputs.y < (Dashboard.g[g].y + 20) && GD.inputs.y > (Dashboard.g[g].y - 20)
+    while(GD.inputs.x < (Dashboard.g[g].settings.x + 20) && GD.inputs.x > (Dashboard.g[g].settings.x - 20) 
+      && GD.inputs.y < (Dashboard.g[g].settings.y + 20) && GD.inputs.y > (Dashboard.g[g].settings.y - 20)
       && GD.inputs.x != -32768) {
 
       Dashboard.g[g].move(GD.inputs.x, GD.inputs.y);
@@ -251,7 +256,7 @@ void parameterEdit(byte g) {
     GD.Tag(LEFT_BUTTON);
     GD.cmd_button(150, 150, 80, 30, 28, options,  "<");
     // parameter name
-    GD.cmd_text(200, 100, 31, options, Dashboard.g[g].label);
+    GD.cmd_text(200, 100, 31, options, Dashboard.g[g].settings.label);
     // right arrow
     GD.Tag(RIGHT_BUTTON);
     GD.cmd_button(250, 150, 80, 30, 28, options,  ">");
@@ -264,11 +269,11 @@ void parameterEdit(byte g) {
       delay(200);
       break;
     case LEFT_BUTTON:
-      Dashboard.g[g].p--;
+      Dashboard.g[g].settings.p--;
       delay(200);
       break;
     case RIGHT_BUTTON:
-      Dashboard.g[g].p++;
+      Dashboard.g[g].settings.p++;
       delay(200);
       break;
     }
