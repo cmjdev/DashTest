@@ -5,28 +5,35 @@ Dash::Dash() {
   Gauge g[8];
 }
 
-Dash::~Dash() {}
+Dash::~Dash() {
+}
 
 void Dash::addGauge(byte t) {
   switch (t) {
-    case 0:
-      g[gaugeNumber].update(gaugeNumber++, 240,115,100,t);
-      break;
-    case 1:
-      g[gaugeNumber].update(gaugeNumber++, 60,50,100,80,t);
-      break;
-    case 2:
-      g[gaugeNumber].update(gaugeNumber++, 80,225,260,40,t);
-    case 3:
-      break;
+  case 0:
+    g[gaugeNumber].update(gaugeNumber++, 240,115,100,t);
+    break;
+  case 1:
+    g[gaugeNumber].update(gaugeNumber++, 60,50,100,80,t);
+    break;
+  case 2:
+    g[gaugeNumber].update(gaugeNumber++, 80,225,260,40,t);
+  case 3:
+    break;
   }
 }
 
+void Dash::clear() {
+  for(int i=0; i < 8; i++)
+    g[i].settings.active = false;
+  gaugeNumber = 0;
+}
 void Dash::display() {
-  
+
   for(int i = 0; i < 8; i++) {
-    if(g[i].active)
+    if(g[i].settings.active)
       g[i].write();
   }
-  
+
 }
+

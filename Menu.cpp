@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include "Dash.h"
 #include "Menu.h"
+#include "Attributes.h"
 
 #define options OPT_FLAT
 
@@ -22,11 +23,13 @@
 
 #define EXIT_BUTTON 150
 #define BACK_BUTTON 151
-#define SELECT_BUTTON 152
-#define LEFT_BUTTON 153
-#define RIGHT_BUTTON 154
+#define DELETE_BUTTON 153
+#define SELECT_BUTTON 154
+#define LEFT_BUTTON 155
+#define RIGHT_BUTTON 156
 
 extern Dash Dashboard;
+extern byte currentDash;
 
 byte inMenu = false;
 
@@ -70,10 +73,17 @@ void menuMain() {
       break;
     }
   }
+
+
+  for(byte i = 0; i < 8; i++)
+    Dashboard.g[i].save(i);
+
 }
 
 void menuCreate() {
-
+  
+  delay(200);
+  
   byte inCreate = true;
 
   while(inMenu && inCreate) {
@@ -96,7 +106,7 @@ void menuCreate() {
     GD.cmd_button(310, 235, 80, 30, 28, options,  "Back");
 
     GD.Tag(EXIT_BUTTON);
-    GD.cmd_button(395, 235, 80, 30, 28, options,  "Exit");
+    GD.cmd_button(395, 235, 80, 30, 28, options,  "settings.xit");
 
     GD.swap();
 
@@ -104,17 +114,20 @@ void menuCreate() {
     case ANALOG_CREATE:
       Dashboard.addGauge(0);
       inCreate = false;
+      delay(200);
       break;
     case DIGITAL_CREATE:
-    Dashboard.addGauge(1);
+      Dashboard.addGauge(1);
       inCreate = false;
+      delay(200);
       break;
     case BARGRAPH_CREATE:
-    Dashboard.addGauge(2);
+      Dashboard.addGauge(2);
       inCreate = false;
+      delay(200);
       break;
     case INDICATOR_CREATE:
-    //Dashboard.addGauge(0);
+      //Dashboard.addGauge(0);
       break;
     case BACK_BUTTON:
       inCreate = false;
@@ -127,6 +140,8 @@ void menuCreate() {
 }
 
 void menuEdit() {
+  
+  delay(200);
 
   byte inEdit = true;
   byte editGauge = false;
@@ -135,9 +150,9 @@ void menuEdit() {
   while(inMenu && inEdit) {
 
     buildMenu();
+    if (Dashboard.g[selectedGauge-1].settings.active)
+      Dashboard.g[selectedGauge-1].write();
 
-    Dashboard.g[selectedGauge-1].write();
-    
     if(GD.inputs.tag > 0 && GD.inputs.tag < 9 && !editGauge)
       selectedGauge = GD.inputs.tag;
 
@@ -146,6 +161,9 @@ void menuEdit() {
 
     GD.Tag(EXIT_BUTTON);
     GD.cmd_button(395, 235, 80, 30, 28, options,  "Exit");
+
+    GD.Tag(DELETE_BUTTON);
+    GD.cmd_button(10,235,80,30,28,options, "Clear");
 
     if (editGauge) {
       GD.Tag(POSITION_EDIT);
@@ -184,6 +202,9 @@ void menuEdit() {
     case SELECT_BUTTON:
       editGauge = true;
       break;
+    case DELETE_BUTTON:
+      Dashboard.clear();
+      break;
     case EXIT_BUTTON:
       inMenu = false;
       break;
@@ -192,6 +213,8 @@ void menuEdit() {
 }
 
 void moveEdit(byte g) {
+  
+  delay(200);
 
   byte inMove = true;
 
@@ -213,8 +236,8 @@ void moveEdit(byte g) {
       break;
     }
 
-    while(GD.inputs.x < (Dashboard.g[g].x + 20) && GD.inputs.x > (Dashboard.g[g].x - 20) 
-      && GD.inputs.y < (Dashboard.g[g].y + 20) && GD.inputs.y > (Dashboard.g[g].y - 20)
+    while(GD.inputs.x < (Dashboard.g[g].settings.x + 20) && GD.inputs.x > (Dashboard.g[g].settings.x - 20) 
+      && GD.inputs.y < (Dashboard.g[g].settings.y + 20) && GD.inputs.y > (Dashboard.g[g].settings.y - 20)
       && GD.inputs.x != -32768) {
 
       Dashboard.g[g].move(GD.inputs.x, GD.inputs.y);
@@ -228,14 +251,13 @@ void moveEdit(byte g) {
 }
 
 void parameterEdit(byte g) {
+  
+  delay(200);
 
   byte inParameter = true;
-  int value = 0;
 
   while (inParameter) {
     buildMenu();
-    //Dashboard.g[g].write();
-
 
     GD.Tag(BACK_BUTTON);
     GD.cmd_button(395, 235, 80, 30, 28, options,  "Back");
@@ -244,7 +266,7 @@ void parameterEdit(byte g) {
     GD.Tag(LEFT_BUTTON);
     GD.cmd_button(150, 150, 80, 30, 28, options,  "<");
     // parameter name
-    GD.cmd_text(200, 100, 31, options, Dashboard.g[g].label);
+    GD.cmd_text(200, 100, 31, options, Dashboard.g[g].getName());
     // right arrow
     GD.Tag(RIGHT_BUTTON);
     GD.cmd_button(250, 150, 80, 30, 28, options,  ">");
@@ -257,11 +279,13 @@ void parameterEdit(byte g) {
       delay(200);
       break;
     case LEFT_BUTTON:
-      Dashboard.g[g].p--;
+      Dashboard.g[g].settings.p = (Dashboard.g[g].settings.p == 0) ? 0 : Dashboard.g[g].settings.p - 1;
+
       delay(200);
       break;
     case RIGHT_BUTTON:
-      Dashboard.g[g].p++;
+      Dashboard.g[g].settings.p = (Dashboard.g[g].settings.p > 38) ? 0 : Dashboard.g[g].settings.p + 1;
+
       delay(200);
       break;
     }
@@ -269,6 +293,9 @@ void parameterEdit(byte g) {
   }
 
 }
+
+
+
 
 
 
