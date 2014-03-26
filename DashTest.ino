@@ -39,6 +39,15 @@ void loop ()
   delay(20);
   GD.swap();
   delay(60);
+  
+  Serial.write('R');
 }  // end of loop
 
+void serialEvent() {
+  byte i = 0;
+  while (Serial.available()) {
+    // get the new byte:
+    parameterValue[i++] = (byte)Serial.read(); 
+  }
+}
 
