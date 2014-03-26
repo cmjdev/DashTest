@@ -13,10 +13,10 @@ Dash Dashboard[3];
 void setup ()
 {
   Serial.begin(9600);
-  
-  for(byte i = 0; i < 8; i++)
-    Dashboard[currentDash].g[i].recover(i);
-
+  for (byte j = 0; j < 3; j++) { 
+    for(byte i = 0; i < 8; i++)
+      Dashboard[j].g[i].recover(i,j);
+  }
   GD.begin(~GD_STORAGE);
 }  // end of setup
 
@@ -24,7 +24,7 @@ void loop ()
 {
   int lastY = GD.inputs.y;
   int lastX = GD.inputs.x;
-  
+
   GD.get_inputs();
 
   if (lastY > 0 && lastY < 40 && GD.inputs.y > 40)
@@ -32,14 +32,14 @@ void loop ()
 
   if (lastX > 400 && GD.inputs.x < 400)
     currentDash = (currentDash == 2) ? 0 : currentDash + 1;
-    
+
 
   GD.Clear();
   Dashboard[currentDash].display();
   delay(20);
   GD.swap();
   delay(60);
-  
+
   Serial.write('R');
 }  // end of loop
 
@@ -50,4 +50,5 @@ void serialEvent() {
     parameterValue[i++] = (byte)Serial.read(); 
   }
 }
+
 

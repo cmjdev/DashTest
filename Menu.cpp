@@ -77,16 +77,16 @@ void menuMain() {
 
 
   for(byte i = 0; i < 8; i++)
-    Dashboard[currentDash].g[i].save(i);
-    
+    Dashboard[currentDash].g[i].save(i, currentDash);
+
   delay(500);
 
 }
 
 void menuCreate() {
-  
+
   delay(200);
-  
+
   byte inCreate = true;
 
   while(inMenu && inCreate) {
@@ -143,7 +143,7 @@ void menuCreate() {
 }
 
 void menuEdit() {
-  
+
   delay(200);
 
   byte inEdit = true;
@@ -177,7 +177,7 @@ void menuEdit() {
 
       GD.Tag(PARAMETER_EDIT);
       GD.cmd_button(5, 75, 140, 30, 28, options,  "Parameter");
-      
+
       GD.Tag(DELETE_BUTTON);
       GD.cmd_button(5, 110, 140, 30, 28, options,  "Delete");
     } 
@@ -222,7 +222,7 @@ void menuEdit() {
 }
 
 void moveEdit(byte g) {
-  
+
   delay(200);
 
   byte inMove = true;
@@ -260,7 +260,7 @@ void moveEdit(byte g) {
 }
 
 void parameterEdit(byte g) {
-  
+
   delay(200);
 
   byte inParameter = true;
@@ -302,6 +302,7 @@ void parameterEdit(byte g) {
   }
 
 }
+
 
 
 

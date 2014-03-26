@@ -11,17 +11,17 @@ class Gauge {
 public:
   Gauge();  // constructor
   ~Gauge();  // destructor
-  
-    struct settings_t {
-  byte g;  // gauge number for tagging
-  word x;  // x start position
-  word y;  // y start position
-  word w;  // width of gauge
-  word h;  // height of gauge
-  word r;  // radius of analog gauge
-  byte p; // parameter number
-  byte t;  // gauge type (0-Analog, 1-Digital, 2-Bargraph, 3-Indicator)
-  byte active;  // gauge in use
+
+  struct settings_t {
+    byte g;  // gauge number for tagging
+    word x;  // x start position
+    word y;  // y start position
+    word w;  // width of gauge
+    word h;  // height of gauge
+    word r;  // radius of analog gauge
+    byte p; // parameter number
+    byte t;  // gauge type (0-Analog, 1-Digital, 2-Bargraph, 3-Indicator)
+    byte active;  // gauge in use
   } 
   settings;
 
@@ -31,10 +31,11 @@ public:
   void resize(int, int);
   void write();
   char* getName();
-  void save(byte);
-  void recover(byte);
+  void save(byte, byte);
+  void recover(byte, byte);
 };
 
 
 #endif
+
 
