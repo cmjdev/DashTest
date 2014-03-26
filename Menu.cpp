@@ -101,8 +101,8 @@ void menuCreate() {
     GD.Tag(BARGRAPH_CREATE);
     GD.cmd_button(5, 75, 140, 30, 28, options,  "Bargraph");
 
-    GD.Tag(INDICATOR_CREATE);
-    GD.cmd_button(5, 110, 140, 30, 28, options,  "Indicator");
+    // GD.Tag(INDICATOR_CREATE);
+    // GD.cmd_button(5, 110, 140, 30, 28, options,  "Indicator");
 
     GD.Tag(BACK_BUTTON);
     GD.cmd_button(310, 235, 80, 30, 28, options,  "Back");
