@@ -1,6 +1,4 @@
-#include <SD.h>
 #include <EEPROM.h>
-
 #include <SPI.h>
 #include <GD2.h>
 
@@ -9,8 +7,6 @@
 
 byte parameterValue[39];
 byte currentDash = 0;
-
-File myFile;
 
 Dash Dashboard;
 
@@ -21,22 +17,12 @@ void setup ()
   for(byte i = 0; i < 8; i++)
     Dashboard.g[i].recover(i);
 
-
-
-
-  //    Dashboard.addGauge(0);
-  //    Dashboard.addGauge(1);
-  //    Dashboard.addGauge(2);
-  //    Dashboard.addGauge(3);
-  //    Dashboard.display();
-
   GD.begin(~GD_STORAGE);
 }  // end of setup
 
 void loop ()
 {
   int lastY = GD.inputs.y;
-  //sint lastX = GD.inputs.x;
 
   GD.get_inputs();
 

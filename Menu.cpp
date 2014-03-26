@@ -64,34 +64,26 @@ void menuMain() {
     switch(GD.inputs.tag) {
     case CREATE_BUTTON:
       menuCreate();
-      delay(200);
       break;
     case EDIT_BUTTON:
       menuEdit();
-      delay(200);
       break;
     case EXIT_BUTTON:
       inMenu = false;
-      delay(200);
       break;
     }
   }
-  /*
-  GD.__end();
-   //GD.finish();
-   for(byte i = 0; i < 8; i++)
-   Dashboard.g[i].save(i);
-   //GD.begin();
-   GD.resume();
-*/
+
 
   for(byte i = 0; i < 8; i++)
-  Dashboard.g[i].save(i);
+    Dashboard.g[i].save(i);
 
 }
 
 void menuCreate() {
-
+  
+  delay(200);
+  
   byte inCreate = true;
 
   while(inMenu && inCreate) {
@@ -148,6 +140,8 @@ void menuCreate() {
 }
 
 void menuEdit() {
+  
+  delay(200);
 
   byte inEdit = true;
   byte editGauge = false;
@@ -157,7 +151,7 @@ void menuEdit() {
 
     buildMenu();
     if (Dashboard.g[selectedGauge-1].settings.active)
-    Dashboard.g[selectedGauge-1].write();
+      Dashboard.g[selectedGauge-1].write();
 
     if(GD.inputs.tag > 0 && GD.inputs.tag < 9 && !editGauge)
       selectedGauge = GD.inputs.tag;
@@ -167,7 +161,7 @@ void menuEdit() {
 
     GD.Tag(EXIT_BUTTON);
     GD.cmd_button(395, 235, 80, 30, 28, options,  "Exit");
-    
+
     GD.Tag(DELETE_BUTTON);
     GD.cmd_button(10,235,80,30,28,options, "Clear");
 
@@ -219,6 +213,8 @@ void menuEdit() {
 }
 
 void moveEdit(byte g) {
+  
+  delay(200);
 
   byte inMove = true;
 
@@ -255,16 +251,14 @@ void moveEdit(byte g) {
 }
 
 void parameterEdit(byte g) {
+  
+  delay(200);
 
   byte inParameter = true;
 
   while (inParameter) {
     buildMenu();
-    //Dashboard.g[g].write();
-    
-    //strcpy_P(buf, (char*)pgm_read_word(&(parameterName[Dashboard.g[g].settings.p])));
 
-    
     GD.Tag(BACK_BUTTON);
     GD.cmd_button(395, 235, 80, 30, 28, options,  "Back");
 
@@ -299,6 +293,7 @@ void parameterEdit(byte g) {
   }
 
 }
+
 
 
 
