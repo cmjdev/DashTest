@@ -23,10 +23,11 @@
 
 #define EXIT_BUTTON 150
 #define BACK_BUTTON 151
-#define DELETE_BUTTON 153
-#define SELECT_BUTTON 154
-#define LEFT_BUTTON 155
-#define RIGHT_BUTTON 156
+#define CLEAR_BUTTON 153
+#define DELETE_BUTTON 154
+#define SELECT_BUTTON 155
+#define LEFT_BUTTON 156
+#define RIGHT_BUTTON 157
 
 extern Dash Dashboard;
 extern byte currentDash;
@@ -106,7 +107,7 @@ void menuCreate() {
     GD.cmd_button(310, 235, 80, 30, 28, options,  "Back");
 
     GD.Tag(EXIT_BUTTON);
-    GD.cmd_button(395, 235, 80, 30, 28, options,  "settings.xit");
+    GD.cmd_button(395, 235, 80, 30, 28, options,  "Eit");
 
     GD.swap();
 
@@ -162,7 +163,7 @@ void menuEdit() {
     GD.Tag(EXIT_BUTTON);
     GD.cmd_button(395, 235, 80, 30, 28, options,  "Exit");
 
-    GD.Tag(DELETE_BUTTON);
+    GD.Tag(CLEAR_BUTTON);
     GD.cmd_button(10,235,80,30,28,options, "Clear");
 
     if (editGauge) {
@@ -174,6 +175,9 @@ void menuEdit() {
 
       GD.Tag(PARAMETER_EDIT);
       GD.cmd_button(5, 75, 140, 30, 28, options,  "Parameter");
+      
+      GD.Tag(DELETE_BUTTON);
+      GD.cmd_button(5, 110, 140, 30, 28, options,  "Delete");
     } 
     else {
       GD.Tag(SELECT_BUTTON);
@@ -191,6 +195,9 @@ void menuEdit() {
     case PARAMETER_EDIT:
       parameterEdit(selectedGauge-1);
       break;
+    case DELETE_BUTTON:
+      Dashboard.g[selectedGauge-1].settings.active = false;
+      break;
     case BACK_BUTTON:
       if(editGauge) {
         editGauge = false; 
@@ -202,7 +209,7 @@ void menuEdit() {
     case SELECT_BUTTON:
       editGauge = true;
       break;
-    case DELETE_BUTTON:
+    case CLEAR_BUTTON:
       Dashboard.clear();
       break;
     case EXIT_BUTTON:
