@@ -71,16 +71,15 @@ void menuMain() {
       break;
     case EXIT_BUTTON:
       inMenu = false;
+      delay(500);
+
       break;
     }
   }
 
 
   for(byte i = 0; i < 8; i++)
-    Dashboard[currentDash].g[i].save(i, currentDash);
-
-  delay(500);
-
+    Dashboard[currentDash].g[i].save();
 }
 
 void menuCreate() {
@@ -137,6 +136,8 @@ void menuCreate() {
       break;
     case EXIT_BUTTON:
       inMenu = false;
+      delay(500);
+
       break;
     }
   } 
@@ -216,6 +217,8 @@ void menuEdit() {
       break;
     case EXIT_BUTTON:
       inMenu = false;
+        delay(500);
+
       break;
     }
   } 

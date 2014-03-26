@@ -13,10 +13,9 @@ Dash Dashboard[3];
 void setup ()
 {
   Serial.begin(9600);
-  for (byte j = 0; j < 3; j++) { 
     for(byte i = 0; i < 8; i++)
-      Dashboard[j].g[i].recover(i,j);
-  }
+      Dashboard[currentDash].g[i].recover();
+  
   GD.begin(~GD_STORAGE);
 }  // end of setup
 
@@ -30,7 +29,7 @@ void loop ()
   if (lastY > 0 && lastY < 40 && GD.inputs.y > 40)
     menuMain();
 
-  if (lastX > 400 && GD.inputs.x < 400)
+  if (lastX > 460 && GD.inputs.x < 460)
     currentDash = (currentDash == 2) ? 0 : currentDash + 1;
 
 
