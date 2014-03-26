@@ -31,8 +31,8 @@ public:
   void resize(int, int);
   void write();
   char* getName();
-  void save();
-  void recover();
+  void save(byte);
+  void recover(byte);
 };
 
 

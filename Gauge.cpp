@@ -77,17 +77,16 @@ char* Gauge::getName() {
 }
 
 
-void Gauge::save(){
+void Gauge::save(byte i){
 
-  EEPROM_writeAnything(settings.g*15+100, settings);
-
-}
-
-void Gauge::recover(){
-
-  EEPROM_readAnything(settings.g*15+100, settings);
+  EEPROM_writeAnything(i*25+100, settings);
 
 }
 
+void Gauge::recover(byte i){
+
+  EEPROM_readAnything(i*25+100, settings);
+
+}
 
 

@@ -8,14 +8,15 @@
 byte parameterValue[39];
 byte currentDash = 0;
 
-Dash Dashboard[3];
+Dash Dashboard;
 
 void setup ()
 {
   Serial.begin(9600);
-    for(byte i = 0; i < 8; i++)
-      Dashboard[currentDash].g[i].recover();
-  
+
+  for(byte i = 0; i < 8; i++)
+    Dashboard.g[i].recover(i);
+
   GD.begin(~GD_STORAGE);
 }  // end of setup
 
@@ -28,13 +29,13 @@ void loop ()
 
   if (lastY > 0 && lastY < 40 && GD.inputs.y > 40)
     menuMain();
-
+  /*
   if (lastX > 460 && GD.inputs.x < 460)
-    currentDash = (currentDash == 2) ? 0 : currentDash + 1;
-
+   currentDash = (currentDash == 2) ? 0 : currentDash + 1;
+   */
 
   GD.Clear();
-  Dashboard[currentDash].display();
+  Dashboard.display();
   delay(20);
   GD.swap();
   delay(60);
@@ -49,5 +50,6 @@ void serialEvent() {
     parameterValue[i++] = (byte)Serial.read(); 
   }
 }
+
 
 
