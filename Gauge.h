@@ -32,7 +32,7 @@ public:
   void write();
   char* getName();
   void save(byte);
-  void recover(byte);
+  void recover(byte, byte);
 };
 
 

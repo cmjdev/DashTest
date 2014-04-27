@@ -1,6 +1,8 @@
 #include "Dash.h"
 
 Dash::Dash() {
+
+  // allot space for 8 gauges per dashboard
   Gauge g[8];
 }
 
@@ -8,6 +10,8 @@ Dash::~Dash() {
 }
 
 void Dash::addGauge(byte t) {
+
+  // add new gauge at next available index based on gauge type
   switch (t) {
   case 0:
     for(byte i = 0; i < 8; i++) {
@@ -45,12 +49,14 @@ void Dash::clear() {
 }
 void Dash::display() {
 
+  // display routine, iterate through all active gauges and write them to lcd
   for(int i = 0; i < 8; i++) {
     if(g[i].settings.active)
       g[i].write();
   }
 
 }
+
 
 
 
