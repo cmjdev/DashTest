@@ -29,15 +29,17 @@
 #define LEFT_BUTTON 156
 #define RIGHT_BUTTON 157
 
-extern Dash Dashboard;
+extern Dash Dashboard[4];
 extern byte currentDash;
 
 byte inMenu = false;
 
+// dims the current dashboard to give the effect of a transparent
+// overlay in order to display menu items
 void buildMenu() {
   GD.Clear();
   GD.ColorA(50);
-  Dashboard.display();
+  Dashboard[currentDash].display();
   GD.ColorA(255);
   GD.get_inputs();
 }
@@ -77,11 +79,12 @@ void menuMain() {
     }
   }
 
-
+  // save all gauge information when exiting the main menu
   for(byte i = 0; i < 8; i++)
-    Dashboard.g[i].save(i);
+    Dashboard[currentDash].g[i].save(i);
 }
 
+// menu for creating a new gauge
 void menuCreate() {
 
   delay(200);
@@ -114,22 +117,22 @@ void menuCreate() {
 
     switch(GD.inputs.tag) {
     case ANALOG_CREATE:
-      Dashboard.addGauge(0);
+      Dashboard[currentDash].addGauge(0);
       inCreate = false;
       delay(200);
       break;
     case DIGITAL_CREATE:
-      Dashboard.addGauge(1);
+      Dashboard[currentDash].addGauge(1);
       inCreate = false;
       delay(200);
       break;
     case BARGRAPH_CREATE:
-      Dashboard.addGauge(2);
+      Dashboard[currentDash].addGauge(2);
       inCreate = false;
       delay(200);
       break;
     case INDICATOR_CREATE:
-      //Dashboard.addGauge(0);
+      //Dashboard[currentDash].addGauge(0);
       break;
     case BACK_BUTTON:
       inCreate = false;
@@ -143,6 +146,8 @@ void menuCreate() {
   } 
 }
 
+// allows user to change the parameter, size, and location of each gauge
+// user taps the desired gauge and can modify the settings accordingly
 void menuEdit() {
 
   delay(200);
@@ -153,9 +158,10 @@ void menuEdit() {
 
   while(inMenu && inEdit) {
 
+    // highlight the selected gauge
     buildMenu();
-    if (Dashboard.g[selectedGauge-1].settings.active)
-      Dashboard.g[selectedGauge-1].write();
+    if (Dashboard[currentDash].g[selectedGauge-1].settings.active)
+      Dashboard[currentDash].g[selectedGauge-1].write();
 
     if(GD.inputs.tag > 0 && GD.inputs.tag < 9 && !editGauge)
       selectedGauge = GD.inputs.tag;
@@ -189,6 +195,7 @@ void menuEdit() {
 
     GD.swap();
 
+    // choose the correct setting to change based on user touch input
     switch(GD.inputs.tag) {
     case POSITION_EDIT:
       moveEdit(selectedGauge-1);
@@ -199,7 +206,7 @@ void menuEdit() {
       parameterEdit(selectedGauge-1);
       break;
     case DELETE_BUTTON:
-      Dashboard.g[selectedGauge-1].settings.active = false;
+      Dashboard[currentDash].g[selectedGauge-1].settings.active = false;
       break;
     case BACK_BUTTON:
       if(editGauge) {
@@ -213,17 +220,19 @@ void menuEdit() {
       editGauge = true;
       break;
     case CLEAR_BUTTON:
-      Dashboard.clear();
+      Dashboard[currentDash].clear();
       break;
     case EXIT_BUTTON:
       inMenu = false;
-        delay(500);
+      delay(500);
 
       break;
     }
   } 
 }
 
+// function that allows the user to drag the selected gauge on screen
+// and automatically update the position data of the gauge
 void moveEdit(byte g) {
 
   delay(200);
@@ -233,7 +242,7 @@ void moveEdit(byte g) {
   while(inMove) {
 
     buildMenu();
-    Dashboard.g[g].write();
+    Dashboard[currentDash].g[g].write();
 
     GD.Tag(BACK_BUTTON);
     GD.cmd_button(395, 235, 80, 30, 28, options,  "Back");
@@ -248,13 +257,13 @@ void moveEdit(byte g) {
       break;
     }
 
-    while(GD.inputs.x < (Dashboard.g[g].settings.x + 20) && GD.inputs.x > (Dashboard.g[g].settings.x - 20) 
-      && GD.inputs.y < (Dashboard.g[g].settings.y + 20) && GD.inputs.y > (Dashboard.g[g].settings.y - 20)
+    while(GD.inputs.x < (Dashboard[currentDash].g[g].settings.x + 20) && GD.inputs.x > (Dashboard[currentDash].g[g].settings.x - 20) 
+      && GD.inputs.y < (Dashboard[currentDash].g[g].settings.y + 20) && GD.inputs.y > (Dashboard[currentDash].g[g].settings.y - 20)
       && GD.inputs.x != -32768) {
 
-      Dashboard.g[g].move(GD.inputs.x, GD.inputs.y);
+      Dashboard[currentDash].g[g].move(GD.inputs.x, GD.inputs.y);
       buildMenu();
-      Dashboard.g[g].write();
+      Dashboard[currentDash].g[g].write();
       GD.swap();
     }
 
@@ -262,6 +271,8 @@ void moveEdit(byte g) {
 
 }
 
+// allows the user to change which parameter the gauge displays using
+// directional arrows.
 void parameterEdit(byte g) {
 
   delay(200);
@@ -278,7 +289,7 @@ void parameterEdit(byte g) {
     GD.Tag(LEFT_BUTTON);
     GD.cmd_button(150, 150, 80, 30, 28, options,  "<");
     // parameter name
-    GD.cmd_text(200, 100, 31, options, Dashboard.g[g].getName());
+    GD.cmd_text(200, 100, 31, options, Dashboard[currentDash].g[g].getName());
     // right arrow
     GD.Tag(RIGHT_BUTTON);
     GD.cmd_button(250, 150, 80, 30, 28, options,  ">");
@@ -291,12 +302,12 @@ void parameterEdit(byte g) {
       delay(200);
       break;
     case LEFT_BUTTON:
-      Dashboard.g[g].settings.p = (Dashboard.g[g].settings.p == 0) ? 0 : Dashboard.g[g].settings.p - 1;
+      Dashboard[currentDash].g[g].settings.p = (Dashboard[currentDash].g[g].settings.p == 0) ? 0 : Dashboard[currentDash].g[g].settings.p - 1;
 
       delay(200);
       break;
     case RIGHT_BUTTON:
-      Dashboard.g[g].settings.p = (Dashboard.g[g].settings.p > 38) ? 0 : Dashboard.g[g].settings.p + 1;
+      Dashboard[currentDash].g[g].settings.p = (Dashboard[currentDash].g[g].settings.p > 38) ? 0 : Dashboard[currentDash].g[g].settings.p + 1;
 
       delay(200);
       break;
@@ -305,6 +316,7 @@ void parameterEdit(byte g) {
   }
 
 }
+
 
 
 
